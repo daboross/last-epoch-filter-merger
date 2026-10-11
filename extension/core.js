@@ -50,7 +50,7 @@
     const body = [], tail = [], deferred = [];
     sources.forEach((source, sourceIndex) => {
       const firstHide = source.rules.findIndex(r => r.type === 'HIDE');
-      const qualifying = firstHide > 0 && source.rules.slice(0, firstHide).every(r => r.type !== 'HIDE') && source.rules.slice(firstHide).every(r => r.type === 'HIDE');
+      const qualifying = firstHide >= 0 && source.rules.slice(0, firstHide).every(r => r.type !== 'HIDE') && source.rules.slice(firstHide).every(r => r.type === 'HIDE');
       const split = mode === 'smart-tail' && qualifying ? firstHide : source.rules.length;
       source.rules.forEach((rule, i) => (i < split ? body : tail).push({ ...rule, source: sourceIndex, sourcePriority: i + 1 }));
       deferred.push(source.rules.length - split);
@@ -73,7 +73,7 @@
     if (sources.every(s => /^\d+$/.test(s.schemaVersion))) set(root, 'lootFilterVersion', Math.max(...sources.map(s => Number(s.schemaVersion))));
     const warnings = [];
     if (deferred.some(n => n)) warnings.push('Trailing hide blocks moved after both source bodies as requested; visibility can change.');
-    if (sources.some(s => s.rules.some((r, i) => r.type === 'HIDE' && i < s.rules.length - 1 && value(r.node, 'isEnabled') === 'true' && children(child(r.node, 'conditions')).length === 0))) warnings.push('An enabled unconditional hide can make subsequent rules unreachable.');
+    if (rules.some((r, i) => r.type === 'HIDE' && i < rules.length - 1 && value(r.node, 'isEnabled') === 'true' && children(child(r.node, 'conditions')).length === 0)) warnings.push('An enabled unconditional hide can make subsequent rules unreachable.');
     if (sources.some(s => s.orderSource.startsWith('legacy'))) warnings.push('Legacy source without Order interpreted using legacyOrder; confirm priority in the game.');
     if (sources[0].schemaVersion !== sources[1].schemaVersion) warnings.push('Different schema versions: preserved rule payloads and used the higher numeric version; import validation still required.');
     const report = { name: name.trim(), mode, count: rules.length, gameVersion: value(root, 'lastModifiedInVersion'), schemaVersion: value(root, 'lootFilterVersion'), sources: sources.map((s, i) => ({ name: s.name, count: s.rules.length, orderSource: s.orderSource, deferredHides: deferred[i] })), warnings, rules: rules.map((r, i) => ({ priority: i + 1, source: r.source === 0 ? 'A' : 'B', sourcePriority: r.sourcePriority, type: r.type, enabled: value(r.node, 'isEnabled'), name: value(r.node, 'nameOverride') })) };

@@ -40,7 +40,7 @@
     transfer.items.add(new scope.File([xml],filename,{type:'application/xml'}));
     input.files = transfer.files;
     input.dispatchEvent(new scope.Event('change',{bubbles:true}));
-    return {status:'staged',message:'XML supplied to the site import flow. Review its rule order, choose Private, and finish the site’s Save/Create step. This does not confirm a saved filter.'};
+    return {status:'submitted',message:'XML submitted to Last Epoch Tools. The site normally creates a new private filter immediately. Check the selected tab for the new filter, rule count and privacy setting; this message alone does not confirm creation.'};
   }
   scope.LESite = {capture,stage,findText};
 })(globalThis);
