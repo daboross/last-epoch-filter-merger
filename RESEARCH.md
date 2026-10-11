@@ -20,4 +20,3 @@ The merger does not hardcode affix/base IDs or enumerate condition schemas. It p
 The latest official patch and a local lastModifiedInVersion tag are separate evidence. We keep the newer input tag and do not claim that changing metadata itself upgrades a filter.
 
 Userscript storage and metadata follow [official Tampermonkey documentation](https://www.tampermonkey.net/documentation.php?locale=en). The bundle uses local GM_getValue/GM_setValue and GM_registerMenuCommand without remote dependencies.
-
