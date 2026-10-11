@@ -1,0 +1,11 @@
+{
+  "manifest_version": 2,
+  "name": "Last Epoch Filter Merger",
+  "version": "1.0.0",
+  "description": "Merge two loot filters without changing colors, with optional trailing hide blocks.",
+  "permissions": ["storage", "https://www.lastepochtools.com/loot-filters/*"],
+  "browser_action": { "default_title": "Merge Last Epoch filters" },
+  "background": { "scripts": ["background.js"] },
+  "content_scripts": [{ "matches": ["https://www.lastepochtools.com/loot-filters/*"], "js": ["site-adapter.js", "content.js"], "run_at": "document_idle" }],
+  "browser_specific_settings": { "gecko": { "id": "last-epoch-filter-merger@local.invalid", "strict_min_version": "109.0" } }
+}
